@@ -6,45 +6,70 @@ using System.Threading.Tasks;
 
 namespace WorldCupLib.Classes
 {
+    /// <summary>
+    /// This class holds a single game
+    /// </summary>
     public class Game
     {
-        private int GameID;
+        #region GameId
+        private int _gameId;
+        public int GameId
+        {
+            get { return _gameId; }
+        }
+        #endregion
 
-        #region TEAMS
+        #region TEAMS variables and Properties
         private Team _awayTeam;
         private Team _homeTeam;
 
-        public Team AwayTeam { get; }
-        public Team HomeTeam { get; }
+        public Team AwayTeam 
+        {
+            get { return _awayTeam; }
+        }
+        public Team HomeTeam 
+        { 
+            get { return _homeTeam; }
+        }
         #endregion
 
-        #region SCORE
+        #region SCORE private variables
         private int _awayTeamScore;
         private int _homeTeamScore;
+
+
         #endregion
 
-        #region DATETIMES
+        #region DATETIMES variables and Properties
         private DateTime _startTime;
         private DateTime _endTime;
 
-        public DateTime StartTime { get; }
+        public DateTime StartTime 
+        { 
+            get { return _startTime; }
+        }
         #endregion
 
 
+        
 
-        private Game(Team away, Team home)
+        private Game(Team home, Team away, int gameId)
         {
             _awayTeam = away;
             _homeTeam = home;
             _awayTeamScore = 0;
             _homeTeamScore = 0;
+            _gameId = gameId;
+            _startTime = DateTime.Now;
         }
 
-        public static Game Start(Team away, Team home)
+        
+
+
+        public static Game Start(Team home, Team away,int gameId)
         {
 
-            Game g = new Game(away, home);
-            g._startTime = DateTime.Now;
+            Game g = new Game(home, away,gameId);
             return g;
         
         }
@@ -59,7 +84,7 @@ namespace WorldCupLib.Classes
             return false;
         }
 
-        public void UpdateScore(int awayScore,int homeScore)
+        public void UpdateScore(int homeScore, int awayScore)
         {
             _awayTeamScore = awayScore;
             _homeTeamScore = homeScore;
@@ -67,7 +92,7 @@ namespace WorldCupLib.Classes
 
         public Tuple<int, int> GetScore()
         {
-            return new Tuple<int, int>(_awayTeamScore, _homeTeamScore);
+            return new Tuple<int, int>(_homeTeamScore, _awayTeamScore);
         }
     }
 }

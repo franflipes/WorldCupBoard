@@ -6,3 +6,8 @@
 /WorldCupBoard/.vs/WorldCupBoard/v16
 /.vs/WorldCupBoard/v16
 /.vs
+/WorldCupBoard/WorldCupLib/bin/Debug
+/WorldCupBoard/WorldCupBoard/bin/Debug
+/WorldCupBoard/WorldCupLib/obj/Debug
+/WorldCupBoard/WorldCupLibTesting/obj
+/WorldCupBoard/WorldCupLibTesting/bin/Debug/netcoreapp3.1

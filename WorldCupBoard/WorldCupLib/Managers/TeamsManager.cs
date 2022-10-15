@@ -60,10 +60,7 @@ namespace WorldCupLib.Managers
             //Double check for sanity, we shouldn´t even doublecheck because previously manager should have checked 
             if (!ExistTeam(team))
             {
-                Team t = new Team() 
-                { 
-                    Name = team 
-                };
+                Team t = new Team(team);
 
                 _teams.Add(t);
 
@@ -71,6 +68,21 @@ namespace WorldCupLib.Managers
             }
 
             return null;
+        }
+
+        public bool RemoveTeam(string team)
+        {
+            //Double check for sanity, we shouldn´t even doublecheck because previously manager should have checked 
+            if (ExistTeam(team))
+            {
+                Team t = ReturnTeam(team);
+
+                _teams.Remove(t);
+
+                return true;
+            }
+
+            return false;
         }
 
 

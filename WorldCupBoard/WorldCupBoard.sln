@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCupBoard", "WorldCupBo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCupLib", "WorldCupLib\WorldCupLib.csproj", "{2FFD90C4-D799-45C2-AF67-4000836FB715}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldCupLibTesting", "WorldCupLibTesting\WorldCupLibTesting.csproj", "{8D3A7799-C0AA-47F8-9A20-716A4DE12825}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2FFD90C4-D799-45C2-AF67-4000836FB715}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FFD90C4-D799-45C2-AF67-4000836FB715}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FFD90C4-D799-45C2-AF67-4000836FB715}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D3A7799-C0AA-47F8-9A20-716A4DE12825}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D3A7799-C0AA-47F8-9A20-716A4DE12825}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D3A7799-C0AA-47F8-9A20-716A4DE12825}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D3A7799-C0AA-47F8-9A20-716A4DE12825}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
