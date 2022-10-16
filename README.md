@@ -7,6 +7,8 @@ I didnt think appropiate to use try-catch-finally, eventhough it is always good 
 
 If you look at the word "REQUIREMENT" through the code, you will find where the 4 requirements are implemented, both in library project and in Testing project.
 
+Public methods in managers have XML documentation.
+
 ## STRUCTURE
 Pretty straighforward implementation. A library that holds 2 classes(**Game and Team**) for the basic information. 2 more classes called managers(**GameManager and TeamManager**) that implement the logic of the application and the classes in charge of interact with TEAMs and GAMEs
 
@@ -26,7 +28,10 @@ Pretty straighforward implementation. A library that holds 2 classes(**Game and 
 
 
 ### Testing Project
--I have tried to cover as much testing as possible. I Didn´t do any testing for Team class because it is not worth. **GameUnitTest** class have 3 Nominal Tests. So, most of the testing is again for the managers where is implemented most of the logic for the scoreboard. <br />
-&nbsp; I tried whenever I could to test not only nominal cases but also not nominal use cases.
+-I have tried to cover as much testing as possible. I Didn´t do any testing for Team class because it is not worth. <br />
+&nbsp;**GameUnitTest** class have 3 Nominal Tests. <br />
+&nbsp;So, most of the testing is again for the managers where is implemented most of the logic for the scoreboard. <br />
+-I tried whenever I could to test not only nominal cases but also not nominal use cases.<br />
+-Make some improvements using initialize methods and clean-ups
 
 
