@@ -7,16 +7,23 @@ using System;
 
 namespace WorldCupLibTesting
 {
-    public class GamesManagerUnitTest
+    public class GamesManagerUnitTest: IDisposable
     {
+
         private GamesManager gm;
+
+        //Xunit initialization method
+        public GamesManagerUnitTest()
+        {
+            gm = GamesManager.GetInstance();
+        }
+
         [Fact]
         public void GamesManagerSingleton()
         {
-            GamesManager gm1 = GamesManager.GetInstance();
             GamesManager gm2 = GamesManager.GetInstance();
 
-            Assert.True(gm1 == gm2);
+            Assert.True(gm == gm2);
 
         }
 
@@ -26,16 +33,12 @@ namespace WorldCupLibTesting
         [Fact]
         public void StartGame_Nominal()
         {
-            gm = GamesManager.GetInstance();
-
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
 
             gm.StartGame(home, away);
 
             Assert.True(gm.IsGameInProgress(home, away));
-            gm.FinishGame(home, away);
-
         }
 
         
@@ -49,7 +52,6 @@ namespace WorldCupLibTesting
         //A started game that has  finished, is not in progress
         public void FinishGame_Nominal()
         {
-            gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
@@ -66,7 +68,6 @@ namespace WorldCupLibTesting
         [Fact]
         public void FinishGame_NotNominal()
         {
-            gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
@@ -80,8 +81,6 @@ namespace WorldCupLibTesting
         [Fact]
         public void FinishGameByGameId_Nominal()
         {
-            gm = GamesManager.GetInstance();
-
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
 
@@ -97,7 +96,6 @@ namespace WorldCupLibTesting
         [Fact]
         public void FinishGameByGameId_NotNominal()
         {
-            gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
@@ -107,7 +105,6 @@ namespace WorldCupLibTesting
             gm.FinishGame(5);
 
             Assert.True(gm.GamesInProgress() == 1);
-            gm.FinishGame(home, away);
 
         }
         #endregion
@@ -120,7 +117,6 @@ namespace WorldCupLibTesting
         //A started game that has  finished, is not in progress
         public void UpdateScore_Nominal()
         {
-            gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
@@ -130,7 +126,6 @@ namespace WorldCupLibTesting
             Tuple<int,int> score = gm.GetGameScore(home, away);
 
             Assert.True(score.Item1==1 && score.Item2==1);
-            gm.FinishGame(home, away);
 
         }
 
@@ -139,7 +134,6 @@ namespace WorldCupLibTesting
         [Fact]
         public void UpdateScore_NotNominal()
         {
-            gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
@@ -160,19 +154,16 @@ namespace WorldCupLibTesting
         [Fact]
         public void SameGameCanNotBeStartedTwice_NotNominal()
         {
-            gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
-
              
             gm.StartGame(home, away);
+
             //StartGame returns the game created, we try to start two times
             Game g = gm.StartGame(home, away);
 
             Assert.Null(g);
-            gm.FinishGame(home, away);
-
         }
 
         //Same team can not be in a second match
@@ -180,7 +171,6 @@ namespace WorldCupLibTesting
         [Fact]
         public void SameTeamCanNotBePlayingTwice_NotNominal()
         {
-            GamesManager gm = GamesManager.GetInstance();
 
             Team away = new Team("Away1 Team");
             Team home = new Team("Home1 Team");
@@ -191,8 +181,6 @@ namespace WorldCupLibTesting
             Game g = gm.StartGame(secondHome, away);
 
             Assert.Null(g);
-            gm.FinishGame(home, away);
-
         }
         #endregion
 
@@ -200,7 +188,7 @@ namespace WorldCupLibTesting
         [Fact]
         public void GamesSummaryNominal()
         {
-            GamesManager gm = GamesManager.GetInstance();
+            //GamesManager gm = GamesManager.GetInstance();
 
             Team Mexico = new Team("Mexico");
             Team Canada = new Team("Canada");
@@ -262,14 +250,11 @@ namespace WorldCupLibTesting
 
                 i++;
             }
-
-            gm.FinishGame(Mexico, Canada);
-            gm.FinishGame(Spain, Brazil);
-            gm.FinishGame(Germany, France);
-            gm.FinishGame(Uruguay, Italy);
-            gm.FinishGame(Argentina, Australia);
-
         }
-
+        //Clean-up method
+        public void Dispose()
+        {
+            gm.FinishAllGames();
+        }
     }
 }

@@ -8,14 +8,17 @@ namespace WorldCupLibTesting
     {
         //Singleton, same manager when run full suite
         TeamsManager tm;
+        public TeamsManagerUnitTest()
+        {
+            tm = TeamsManager.GetInstance();
+        }
 
         [Fact]
         public void TeamsManagerSingleton()
         {
-            TeamsManager tm1 = TeamsManager.GetInstance();
             TeamsManager tm2 = TeamsManager.GetInstance();
 
-            Assert.True(tm1 == tm2);
+            Assert.True(tm == tm2);
         }
 
         [Fact]
@@ -23,8 +26,6 @@ namespace WorldCupLibTesting
         //Not-Nominal use case
         public void TeamCanNotBeAddedTwice_NotNominal()
         {
-            tm = TeamsManager.GetInstance();
-
             tm.AddTeam("Test2 Team");
             Team t = tm.AddTeam("Test2 Team");
 
@@ -36,8 +37,6 @@ namespace WorldCupLibTesting
         //Nominal use case
         public void TeamReturnTheSame_Nominal()
         {
-            tm = TeamsManager.GetInstance();
-           
             Team t1 = tm.AddTeam("Test3 Team");
             Team t2 = tm.ReturnTeam("Test3 Team");
 
@@ -49,8 +48,6 @@ namespace WorldCupLibTesting
         //Nominal use case
         public void TeamCanBeRemoved_Nominal()
         {
-            tm = TeamsManager.GetInstance();
-
             tm.AddTeam("Test4 Team");
             tm.RemoveTeam("Test4 Team");
             Team t1 = tm.ReturnTeam("Test4 Team");
