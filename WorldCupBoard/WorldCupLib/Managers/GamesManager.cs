@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using WorldCupLib.Classes;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("WorldCupLibTesting")]
 namespace WorldCupLib.Managers
 {
+    
     public sealed class GamesManager
     {
         //variables to lock the gameId to prevent repeats
@@ -38,16 +41,38 @@ namespace WorldCupLib.Managers
             }
             return _instance;
 
-        }   
+        }
 
+        #region Internal for testing
+
+        ///<summary>
+        ///This method removes al games, that´s why we only make visible to Testing dll
+        /// </summary>
+        internal void FinishAllGames()
+        {
+            foreach (Game g in _games.ToList())
+            {
+                _games.Remove(g);
+            }
+        }
+        #endregion
+
+        /// <summary>
+        /// Returns a List of Games ordered  by totalScore and starTime if score is tied - REQUIREMENT 4
+        /// </summary>
+        /// <returns> List of Games  </returns>
         public List<Game> GetGamesSummary()
         {
             return _games.OrderByDescending(g=>g.StartTime).OrderByDescending(g => g.GetScore().Item1 + g.GetScore().Item2).ToList<Game>();
         }
 
         #region StartGame, FinishGame and UpdateScore
-        //REQUIREMENT 1
-        //Returns game if started or null if not
+        /// <summary>
+        /// Start a Game if not exists  REQUIREMENT 1
+        /// </summary>
+        /// <param name="home"></param>
+        /// <param name="away"></param>
+        /// <returns> a Game if started or null if already in progress</returns>
         public Game StartGame(Team home, Team away)
         {
             //Don´t start another game with same teams if in progress
@@ -62,8 +87,12 @@ namespace WorldCupLib.Managers
             return null;
         }
 
-        //REQUIREMENT 2
-        //Just remove game from List and return a bool if removal happened
+        /// <summary>
+        /// Finish a Game if exists using 2 teams REQUIREMENT 2
+        /// </summary>
+        /// <param name="home"></param>
+        /// <param name="away"></param>
+        /// <returns>True or False</returns>
         public bool FinishGame(Team home, Team away)
         {
             if (IsGameInProgress(home, away))
@@ -76,8 +105,12 @@ namespace WorldCupLib.Managers
             return false;
         }
 
-        //REQUIREMENT 2
-        //Just remove game from List and return a bool if removal happened
+        /// <summary>
+        /// Finish a Game if exists using a GameId REQUIREMENT 2
+        /// </summary>
+        /// <param name="home"></param>
+        /// <param name="away"></param>
+        /// <returns>True or False</returns>
         public bool FinishGame(int gameId)
         {
             if (IsGameInProgress(gameId))
@@ -90,8 +123,13 @@ namespace WorldCupLib.Managers
             return false;
         }
 
-        //REQUIREMENT 3
-        //Just remove game from List and return a bool if removal happened
+        /// <summary>
+        /// Update a game score if in progress REQUIREMENT 3
+        /// </summary>
+        /// <param name="score">Tuple of goals, <home,away></param>
+        /// <param name="home"></param>
+        /// <param name="away"></param>
+        /// <returns>True or false</returns>
         public bool UpdateScore(Tuple<int,int> score, Team home,Team away)
         {
             if (IsGameInProgress(home, away))
@@ -104,9 +142,15 @@ namespace WorldCupLib.Managers
             return false;
         }
 
+        /// <summary>
+        /// Get the game score in progress
+        /// </summary>
+        /// <param name="home"></param>
+        /// <param name="away"></param>
+        /// <returns>Tuple of goals <home,away></returns>
         public Tuple<int, int> GetGameScore( Team home, Team away)
         {
-            if (IsGameInProgress(gameId))
+            if (IsGameInProgress(home,away))
             {
                 Game g = GetGameInProgress(gameId);
                 return g.GetScore();
@@ -117,7 +161,13 @@ namespace WorldCupLib.Managers
 
 
         #region auxiliar methods
-        //Check if 2 teams are already playing a game
+        /// <summary>
+        /// Check if 2 teams are already playing a game and startTime is not null, therefore in progress
+        /// </summary>
+        /// <param name="home"></param>
+        /// <param name="away"></param>
+        /// <returns>True or False</returns>
+        //
         public bool IsGameInProgress(Team home, Team away)
         {
             //we could get rid of comparing StartTime as all games set the value when start and actually it doesn´t define whether is in progress or not. That a game exist in the collection is what validates
@@ -125,6 +175,11 @@ namespace WorldCupLib.Managers
             return _games.Where(g => g.AwayTeam == away && g.HomeTeam == home && g.StartTime != null).Any();
         }
 
+        /// <summary>
+        /// Check if exist a game with the gameId parameter, therefore in progress
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns>True or false</returns>
         public bool IsGameInProgress(int gameId)
         {
             //we could get rid of comparing StartTime as all games set the value when start and actually it doesn´t define whether is in progress or not. That a game exist in the collection is what validates
@@ -138,17 +193,19 @@ namespace WorldCupLib.Managers
             return _games.Where(g => g.AwayTeam == away || g.HomeTeam == home && g.StartTime != null).Any();
         }
 
+        //Obtain a Game if in progress using 2 teams
         private Game GetGameInProgress(Team home, Team away)
         {
             return _games.Where(g => g.AwayTeam == away && g.HomeTeam == home && g.StartTime != null).FirstOrDefault<Game>();
         }
 
+        //Obtain a Game if in progress using a GameId
         private Game GetGameInProgress(int gameId)
         {
             return _games.Where(g => g.GameId==gameId && g.StartTime != null).FirstOrDefault<Game>();
         }
 
-
+        //Obtain a new game id
         private int GetNewGameID()
         {
             //lock objeect to avoid concurrency or races
@@ -159,6 +216,10 @@ namespace WorldCupLib.Managers
             return gameId;
         }
 
+        /// <summary>
+        /// counts the games in progress
+        /// </summary>
+        /// <returns>Integer of games in progress</returns>
         public int GamesInProgress()
         {
             return _games.Where(g => g.StartTime != null).Count();

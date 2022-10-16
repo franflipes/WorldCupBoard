@@ -48,6 +48,11 @@ namespace WorldCupLib.Managers
             return false;
         }
 
+        /// <summary>
+        /// Retrieve a Tema by the name
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns>Team</returns>
         public Team ReturnTeam(string team)
         {
 
@@ -55,6 +60,11 @@ namespace WorldCupLib.Managers
                 
         }
 
+        /// <summary>
+        /// Add a team the name if not exist
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns>Team</returns>
         public Team AddTeam(string team)
         {
             //Double check for sanity, we shouldn´t even doublecheck because previously manager should have checked 
@@ -70,6 +80,11 @@ namespace WorldCupLib.Managers
             return null;
         }
 
+        /// <summary>
+        /// Remove a team if exist
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns>True or false</returns>
         public bool RemoveTeam(string team)
         {
             //Double check for sanity, we shouldn´t even doublecheck because previously manager should have checked 
@@ -84,9 +99,6 @@ namespace WorldCupLib.Managers
 
             return false;
         }
-
-
-
 
     }
 }
